@@ -12,9 +12,9 @@ Configuration PullClientConfigID
         [string[]] $Configurations,
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
-        [string[]] $RegistrationKey
+        [string] $RegistrationKey
     )
-
+    
     Node localhost
     {
         Settings
@@ -40,5 +40,17 @@ Configuration PullClientConfigID
             RegistrationKey         = $RegistrationKey
             AllowUnsecureConnection = $true
         } 
+
+        PartialConfiguration WebServer
+        {
+            Description = "WebServer"
+            ConfigurationSource = @("[ConfigurationRepositoryWeb]PullSrv")
+        }
+
+        PartialConfiguration OSQuery
+        {
+            Description = "OSQuery"
+            ConfigurationSource = @("[ConfigurationRepositoryWeb]PullSrv")
+        }
     }
 }
