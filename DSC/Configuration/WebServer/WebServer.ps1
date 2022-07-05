@@ -18,8 +18,8 @@ Configuration WebServer
 
         WindowsFeature WebManagement
         {
-            Ensure  = "Present"
-            Name    = "Web-Mgmt-Tools"
+            Ensure               = "Present"
+            Name                 = "Web-Mgmt-Tools"
             IncludeAllSubFeature = $true
         }
 

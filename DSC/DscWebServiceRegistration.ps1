@@ -18,30 +18,30 @@
         WindowsFeature DSCServiceFeature
         {
             Ensure = 'Present'
-            Name = 'DSC-Service'
+            Name   = 'DSC-Service'
         }
 
         xDscWebService PSDSCPullServer
         {
-            Ensure = 'Present'
-            EndpointName = 'PSDSCPullServer'
-            Port = 8080
-            PhysicalPath = "$env:SystemDrive\inetpub\PSDSCPullServer"
-            CertificateThumbPrint = "BEF14AEA377DDF6C00271A435BF2061021FFCB1B"
-            ModulePath = "$env:ProgramFiles\WindowsPowerShell\DscService\Modules"
-            ConfigurationPath = "$env:ProgramFiles\WindowsPowerShell\DscService\Configuration"
-            State = 'Started'
-            DependsOn = '[WindowsFeature]DSCServiceFeature'
+            Ensure                   = 'Present'
+            EndpointName             = 'PSDSCPullServer'
+            Port                     = 8080
+            PhysicalPath             = "$env:SystemDrive\inetpub\PSDSCPullServer"
+            CertificateThumbPrint    = "BEF14AEA377DDF6C00271A435BF2061021FFCB1B"
+            ModulePath               = "$env:ProgramFiles\WindowsPowerShell\DscService\Modules"
+            ConfigurationPath        = "$env:ProgramFiles\WindowsPowerShell\DscService\Configuration"
+            State                    = 'Started'
+            DependsOn                = '[WindowsFeature]DSCServiceFeature'
             UseSecurityBestPractices = $false
-            ConfigureFirewall = $false
+            ConfigureFirewall        = $false
         }
 
         File RegistrationKeyFile
         {
-            Ensure = 'Present'
-            Type = 'File'
+            Ensure          = 'Present'
+            Type            = 'File'
             DestinationPath = "$env:ProgramFiles\WindowsPowerShell\DscService\RegistrationKeys.txt"
-            Contents = $RegistrationKey
+            Contents        = $RegistrationKey
         }
     }
 }

@@ -9,9 +9,9 @@ Configuration OSQuery {
             InstallDir = "C:\ProgramData\chocolatey"
         }
 
-        cChocoPackageInstaller installOSQuery
+        cChocoPackageInstaller installOSQuery 
         {
-            Name = "osquery"
+            Name      = "osquery"
             DependsOn = "[cChocoInstaller]installChoco"
         }
     }

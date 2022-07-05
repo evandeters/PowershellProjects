@@ -19,18 +19,26 @@ Configuration PullClientConfigID
     {
         Settings
         {
-            RefreshMode = 'Pull'
-            RefreshFrequencyMins = 30
-            RebootNodeIfNeeded = $true
-            ConfigurationMode = "ApplyAndAutoCorrect"
+            RefreshMode                     = 'Pull'
+            RefreshFrequencyMins            = 30
+            RebootNodeIfNeeded              = $true
+            ConfigurationMode               = "ApplyAndAutoCorrect"
+            AllowModuleOverwrite            = $true
         }
 
         ConfigurationRepositoryWeb PullSrv
         {
-            ServerURL = "http://$DSCServerFQDN`:8080/PSDSCPullServer.svc"
-            RegistrationKey = $RegistrationKey
-            ConfigurationNames = $Configurations
+            ServerURL               = "http://$DSCServerFQDN`:8080/PSDSCPullServer.svc"
+            RegistrationKey         = $RegistrationKey
+            ConfigurationNames      = $Configurations
             AllowUnsecureConnection = $true
         }
+
+        ResourceRepositoryWeb ResourceSrv
+        {
+            ServerURL               = "http://$DSCServerFQDN`:8080/PSDSCPullServer.svc"
+            RegistrationKey         = $RegistrationKey
+            AllowUnsecureConnection = $true
+        } 
     }
 }
