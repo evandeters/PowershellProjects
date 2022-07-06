@@ -27,7 +27,7 @@
             EndpointName             = 'PSDSCPullServer'
             Port                     = 8080
             PhysicalPath             = "$env:SystemDrive\inetpub\PSDSCPullServer"
-            CertificateThumbPrint    = "BEF14AEA377DDF6C00271A435BF2061021FFCB1B"
+            CertificateThumbPrint    = "AllowUnencryptedTraffic"
             ModulePath               = "$env:ProgramFiles\WindowsPowerShell\DscService\Modules"
             ConfigurationPath        = "$env:ProgramFiles\WindowsPowerShell\DscService\Configuration"
             State                    = 'Started'
