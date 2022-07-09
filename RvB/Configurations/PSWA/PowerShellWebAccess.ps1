@@ -29,7 +29,7 @@ Configuration PowerShellWebAccess
             Name    = "Web-ISAPI-Ext"
         }
 
-        WindowsFeature ISAPIExt
+        WindowsFeature ISAPIFilter
         {
             Ensure  = "Present"
             Name    = "Web-ISAPI-Filter"
@@ -45,7 +45,7 @@ Configuration PowerShellWebAccess
         WindowsFeature PSWA
         {
             Ensure               = "Present"
-            Name                 = "PowerShellWebAccess"
+            Name                 = "WindowsPowerShellWebAccess"
             IncludeAllSubFeature = $true
         }
 
