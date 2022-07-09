@@ -11,7 +11,6 @@
 
     Import-DscResource -ModuleName xPSDesiredStateConfiguration
     Import-DscResource -ModuleName PSDesiredStateConfiguration
-    Import-DscResource -ModuleName NetworkingDsc
 
     Node $NodeName
     {
