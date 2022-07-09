@@ -55,8 +55,8 @@ Configuration PowerShellWebAccess
                 Install-PswaWebApplication -UseTestCertificate
                 Add-PswaAuthorizationRule * * *
             }
-            TestScript = { Get-PswaAuthorizationRule -Id 0 }
-            GetScript = { Get-PswaAuthorizationRule -Id 0 }
+            TestScript = { $false }
+            GetScript = { $true }
             
         }
     }
