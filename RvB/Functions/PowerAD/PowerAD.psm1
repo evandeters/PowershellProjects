@@ -13,7 +13,7 @@ function New-AD {
     Install-WindowsFeature RSAT-ADDS -Confirm:$false
 
     # Windows PowerShell script for AD DS Deployment
-    Import-module ADDSDep10yment
+    Import-module ADDSDeployment
     Install-ADDSForest `
     -CreateDnsDelegation:$false `
     -DatabasePath "C:\Windows\NTDS" `
