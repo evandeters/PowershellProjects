@@ -5,8 +5,13 @@ function New-AD {
         [string] $DomainName,
         [Parameter(Mandatory)]
         [ValidateSet('Win2008','Win2008R2','Win2012','Win2012R2','WinThreshold')]
-        [string] $DomainMode
+        [string] $DomainMode,
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string] $NewHostname
     )
+
+    Set-DnsClientServerAddress -InterfaceIndex (Get-NetAdapter | Select-Object -expand ifindex) -ServerAddress ("127.0.0.1", (Get-NetIPConfiguration | Select-Object -ExpandProperty IPv4DefaultGateway | Select-Object -ExpandProperty NextHop))
 
     Install-WindowsFeature AD-Domain-Services -Confirm:$false
     Install-WindowsFeature RSAT-AD-PowerShell -Confirm:$false
