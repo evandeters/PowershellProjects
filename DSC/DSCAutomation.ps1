@@ -4,7 +4,7 @@ wget https://github.com/evanjd711/PowershellProjects/archive/refs/heads/main.zip
 Expand-Archive $env:ProgramFiles\DSC.zip -DestinationPath $env:ProgramFiles\DSC\
 
 #Install DSC web server
-$DSCPath = $env:ProgramFiles\DSC\PowershellProjects-main\DSC\InitialConfigs\
+$DSCPath = "$env:ProgramFiles\DSC\PowershellProjects-main\DSC\InitialConfigs\"
 cd $DSCPath
 Install-Module xPSDesiredStateConfiguration -Confirm:$false
 . .\DscWebServiceRegistration.ps1
@@ -19,16 +19,17 @@ cd ..\Configuration\OSQuery\
 Publish-MofToPullServer -FullName .\OSQuery.mof -PullServerWebConfig C:\inetpub\PSDSCPullServer\web.config
 
 #Client enrollment
-New-SMBShare -Name "DSCClients" -Path $DSCPath -FullAccess "Everyone"
-
-$Computers = Get-ADComputer -filter * | Select-Object -ExpandProperty Name
-$Computers | %{New-PSSession -ComputerName $_; Copy-Item -Path $DSCPath\PullClientConfigID.ps1 -Destination 'C:\' -toSession (Get-PSSession -ComputerName $_)}
 $Hostname = hostname
+$Computers = Get-ADComputer -filter *| Where-Object name -NotLike $Hostname | Select-Object -ExpandProperty Name
+foreach ($Computer in $Computers) {
+    Copy-Item -Path $DSCPath\PullClientConfigID.ps1 -Destination 'C:\' -toSession (New-PSSession -ComputerName $Computer)
+}
 $RegistrationKey = Get-Content 'C:\Program Files\WindowsPowerShell\DscService\RegistrationKeys.txt'
 Invoke-Command $Computers -ScriptBlock {
-    . "C:\ClientConfig.ps1"
-    PullClientConfigID -DSCServerFQDN $Hostname -Configurations ('OSQuery', 'Chrome') -RegistrationKey $Using:RegistrationKey
-    Start-DscConfiguration -Path "C:\PullClientConfigID"
+    $Path = Get-Location
+    . "C:\PullClientConfigID.ps1"
+    PullClientConfigID -DSCServerFQDN $Using:Hostname -Configurations ('OSQuery', 'Chrome') -RegistrationKey $Using:RegistrationKey
+    Start-DscConfiguration -Path "$Path\PullClientConfigID\localhost.meta.mof"
     reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v DSCAutomationHostEnabled /t REG_DWORD /d 1 /f
-    Restart-Computer
+    Restart-Computer -Force
 }

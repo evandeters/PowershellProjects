@@ -1,0 +1,46 @@
+/*
+@TargetNode='localhost'
+@GeneratedBy=evanj
+@GenerationDate=08/01/2022 03:33:02
+@GenerationHost=EVANPC
+*/
+
+instance of cChocoInstaller as $cChocoInstaller1ref
+{
+InstallDir = "C:\\ProgramData\\chocolatey";
+ ResourceID = "[cChocoInstaller]installChoco";
+ ModuleName = "cChoco";
+ SourceInfo = "D:\\evanj\\Projects\\PowerShell Projects\\PowershellProjects\\DSC\\Configuration\\Chrome\\Chrome.ps1::7::9::cChocoInstaller";
+ ModuleVersion = "2.5.0.0";
+ ConfigurationName = "Chrome";
+};
+instance of cChocoPackageInstall as $cChocoPackageInstall1ref
+{
+Name = "googlechrome";
+ ResourceID = "[cChocoPackageInstaller]installOSQuery";
+ ModuleName = "cChoco";
+ SourceInfo = "D:\\evanj\\Projects\\PowerShell Projects\\PowershellProjects\\DSC\\Configuration\\Chrome\\Chrome.ps1::12::9::cChocoPackageInstaller";
+ ModuleVersion = "2.5.0.0";
+
+DependsOn = {
+    "[cChocoInstaller]installChoco"};
+ ConfigurationName = "Chrome";
+};
+instance of OMI_ConfigurationDocument
+
+                    {
+ Version="2.0.0";
+
+                        MinimumCompatibleVersion = "1.0.0";
+
+                        CompatibleVersionAdditionalProperties= {"Omi_BaseResource:ConfigurationName"};
+
+                        Author="evanj";
+
+                        GenerationDate="08/01/2022 03:33:02";
+
+                        GenerationHost="EVANPC";
+
+                        Name="Chrome";
+
+                    };

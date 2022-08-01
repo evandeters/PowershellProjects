@@ -2,7 +2,7 @@ Configuration Chrome {
     
     Import-DscResource -ModuleName cChoco
 
-    Node localhostLF
+    Node localhost
     {
         cChocoInstaller installChoco
         {
@@ -15,5 +15,4 @@ Configuration Chrome {
             DependsOn = "[cChocoInstaller]installChoco"
         }
     }
-
 }
