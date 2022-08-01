@@ -7,6 +7,7 @@ Expand-Archive $env:ProgramFiles\DSC.zip -DestinationPath $env:ProgramFiles\DSC\
 $DSCPath = "$env:ProgramFiles\DSC\PowershellProjects-main\DSC\InitialConfigs\"
 cd $DSCPath
 Install-Module xPSDesiredStateConfiguration -Confirm:$false
+Install-Module xNetworking -Confirm:$false
 . .\DscWebServiceRegistration.ps1
 New_xDscPullServer -RegistrationKey (New-Guid).Guid
 Start-DscConfiguration .\New_xDscPullServer

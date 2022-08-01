@@ -11,6 +11,7 @@
 
     Import-DscResource -ModuleName xPSDesiredStateConfiguration
     Import-DscResource -ModuleName PSDesiredStateConfiguration
+    Import-DscResource -ModuleName xNetworking
 
     Node $NodeName
     {
@@ -48,5 +49,19 @@
             DestinationPath = "$env:ProgramFiles\WindowsPowerShell\DscService\RegistrationKeys.txt"
             Contents        = $RegistrationKey
         }
+
+        xFirewall DSCPort
+        {
+            Name = "dscweb"
+            DisplayName = "DSC Web Server"
+            Action = "Allow"
+            Direction = "Inbound"
+            LocalPort = 8080
+            Protocol = "TCP"
+            Profile = "Domain"
+            Enabled = "True"
+        }
+
+
     }
 }

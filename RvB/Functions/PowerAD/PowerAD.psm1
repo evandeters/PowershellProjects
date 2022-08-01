@@ -26,12 +26,6 @@ function New-AD {
     Set-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -name "NV Hostname" -value  $NewHostname
     Set-ItemProperty -path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -name "AltDefaultDomainName" -value $NewHostname
     Set-ItemProperty -path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -name "DefaultDomainName" -value $NewHostname
-
-    $command = " "
-
-    $EncodedCommand = [Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($Command))
-
-    $schAction = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument '-NoProfile -com'
    
     Register-ScheduledJob -Name "Create-AD-Forest" -ScriptBlock {
         Install-ADDSForest `
