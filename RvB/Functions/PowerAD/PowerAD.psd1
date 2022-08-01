@@ -12,7 +12,7 @@
 RootModule = 'PowerAD.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.5'
+ModuleVersion = '0.0.7'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -24,7 +24,7 @@ GUID = '839a7a38-fa5c-43b0-834c-97a428123c2b'
 Author = 'Evan Deters'
 
 # Company or vendor of this module
-CompanyName = 'Unknown'
+CompanyName = 'Evan Deters'
 
 # Copyright statement for this module
 Copyright = '(c) Evan Deters. All rights reserved.'

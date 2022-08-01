@@ -16,18 +16,37 @@ function New-AD {
     Install-WindowsFeature AD-Domain-Services -Confirm:$false
     Install-WindowsFeature RSAT-AD-PowerShell -Confirm:$false
     Install-WindowsFeature RSAT-ADDS -Confirm:$false
+   
+    Remove-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -name "Hostname" 
+    Remove-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -name "NV Hostname" 
 
-    # Windows PowerShell script for AD DS Deployment
-    Import-module ADDSDeployment
-    Install-ADDSForest `
-    -CreateDnsDelegation:$false `
-    -DatabasePath "C:\Windows\NTDS" `
-    -DomainMode "$DomainMode" `
-    -DomainName "$DomainName" `
-    -ForestMode "$DomainMode" `
-    -InstallDns:$true `
-    -LogPath "C:\Windows\NTDS" `
-    -NoRebootOnCompletion:$false `
-    -SysvolPath "C:\Windows\SYSVOL" `
-    -Force:$true
+    Set-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Control\Computername\Computername" -name "Computername" -value $NewHostname
+    Set-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Control\Computername\ActiveComputername" -name "Computername" -value $NewHostname
+    Set-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -name "Hostname" -value $NewHostname
+    Set-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -name "NV Hostname" -value  $NewHostname
+    Set-ItemProperty -path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -name "AltDefaultDomainName" -value $NewHostname
+    Set-ItemProperty -path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -name "DefaultDomainName" -value $NewHostname
+
+    $command = " "
+
+    $EncodedCommand = [Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($Command))
+
+    $schAction = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument '-NoProfile -com'
+   
+    Register-ScheduledJob -Name "Create-AD-Forest" -ScriptBlock {
+        Install-ADDSForest `
+        -CreateDnsDelegation:$false `
+        -DatabasePath 'C:\Windows\NTDS' `
+        -DomainMode $DomainMode `
+        -DomainName $DomainName `
+        -ForestMode $DomainMode `
+        -SafeModeAdministratorPassword (ConvertTo-SecureString -AsPlainText "swift" -Force)
+        -InstallDns:$true `
+        -LogPath 'C:\Windows\NTDS' `
+        -NoRebootOnCompletion:$false `
+        -SysvolPath 'C:\Windows\SYSVOL' `
+        -Force:$true
+    }
+    New-JobTrigger -AtLogOn -User Administrator -Once
+    
 }
