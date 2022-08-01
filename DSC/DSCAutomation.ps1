@@ -17,6 +17,8 @@ Compress-Archive -Path $env:ProgramFiles\WindowsPowerShell\Modules\cChoco -Desti
 New-DscChecksum -Path $env:ProgramFiles\WindowsPowerShell\DscService\Modules\cChoco_2.5.0.0.zip 
 cd ..\Configuration\OSQuery\
 Publish-MofToPullServer -FullName .\OSQuery.mof -PullServerWebConfig C:\inetpub\PSDSCPullServer\web.config
+cd ..\Configuration\Chrome\
+Publish-MofToPullServer -FullName .\Chrome.mof -PullServerWebConfig C:\inetpub\PSDSCPullServer\web.config
 
 #Client enrollment
 $Hostname = hostname
