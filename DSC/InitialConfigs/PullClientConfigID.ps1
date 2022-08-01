@@ -41,15 +41,15 @@ Configuration PullClientConfigID
             AllowUnsecureConnection = $true
         } 
 
-#        PartialConfiguration WebServer
-#        {
-#            Description = "WebServer"
-#            ConfigurationSource = @("[ConfigurationRepositoryWeb]PullSrv")
-#        }
-
         PartialConfiguration OSQuery
         {
             Description = "OSQuery"
+            ConfigurationSource = @("[ConfigurationRepositoryWeb]PullSrv")
+        }
+
+        PartialConfiguration Chrome
+        {
+            Description = "Chrome"
             ConfigurationSource = @("[ConfigurationRepositoryWeb]PullSrv")
         }
     }

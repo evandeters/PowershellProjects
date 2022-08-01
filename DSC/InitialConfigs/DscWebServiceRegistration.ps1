@@ -20,6 +20,12 @@
             Name   = 'DSC-Service'
         }
 
+        WindowsFeature RSAT-AD-PowerShell
+        {
+            Ensure = 'Present'
+            Name = 'RSAT-AD-PowerShell'
+        }
+
         xDscWebService PSDSCPullServer
         {
             Ensure                   = 'Present'
