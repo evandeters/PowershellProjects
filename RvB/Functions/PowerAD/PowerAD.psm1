@@ -12,7 +12,6 @@ function New-AD {
     )
 
     Set-DnsClientServerAddress -InterfaceIndex (Get-NetAdapter | Select-Object -expand ifindex) -ServerAddress ("127.0.0.1", (Get-NetIPConfiguration | Select-Object -ExpandProperty IPv4DefaultGateway | Select-Object -ExpandProperty NextHop))
-
     Install-WindowsFeature AD-Domain-Services -Confirm:$false
     Install-WindowsFeature RSAT-AD-PowerShell -Confirm:$false
     Install-WindowsFeature RSAT-ADDS -Confirm:$false

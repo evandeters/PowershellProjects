@@ -9,48 +9,34 @@ Configuration PullClientConfigID
         [string] $DSCServerFQDN,
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
-        [string[]] $Configurations,
-        [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
         [string] $RegistrationKey
     )
     
     Node localhost
     {
-        Settings
+        Settings 
         {
-            RefreshMode                     = 'Pull'
-            RefreshFrequencyMins            = 30
-            RebootNodeIfNeeded              = $true
-            ConfigurationMode               = "ApplyAndAutoCorrect"
-            AllowModuleOverwrite            = $true
+            RefreshFrequencyMins           = 30
+            RefreshMode                    = "PULL"
+            ConfigurationMode              = "ApplyAndAutocorrect"
+            ConfigurationID                = "57d5a302-c2cd-49ab-a566-d6947a033043"
+            AllowModuleOverwrite           = $true
+            RebootNodeIfNeeded             = $true
+            ConfigurationModeFrequencyMins = 60
         }
 
-        ConfigurationRepositoryWeb PullSrv
+        ConfigurationRepositoryWeb PullSrv 
         {
             ServerURL               = "http://$DSCServerFQDN`:8080/PSDSCPullServer.svc"
             RegistrationKey         = $RegistrationKey
-            ConfigurationNames      = $Configurations
-            AllowUnsecureConnection = $true
+            AllowUnsecureConnection = $True
         }
 
-        ResourceRepositoryWeb ResourceSrv
+        ResourceRepositoryWeb ResourceSrv 
         {
             ServerURL               = "http://$DSCServerFQDN`:8080/PSDSCPullServer.svc"
             RegistrationKey         = $RegistrationKey
             AllowUnsecureConnection = $true
         } 
-
-        PartialConfiguration OSQuery
-        {
-            Description = "OSQuery"
-            ConfigurationSource = @("[ConfigurationRepositoryWeb]PullSrv")
-        }
-
-        PartialConfiguration Chrome
-        {
-            Description = "Chrome"
-            ConfigurationSource = @("[ConfigurationRepositoryWeb]PullSrv")
-        }
     }
 }

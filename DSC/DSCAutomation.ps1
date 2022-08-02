@@ -13,13 +13,13 @@ New_xDscPullServer -RegistrationKey (New-Guid).Guid
 Start-DscConfiguration .\New_xDscPullServer
 
 #Add configurations to Pull Server
-Install-Module cChoco -Confirm:$false
-Compress-Archive -Path $env:ProgramFiles\WindowsPowerShell\Modules\cChoco -DestinationPath $env:ProgramFiles\WindowsPowerShell\DscService\Modules\cChoco_2.5.0.0.zip 
-New-DscChecksum -Path $env:ProgramFiles\WindowsPowerShell\DscService\Modules\cChoco_2.5.0.0.zip 
-cd ..\Configuration\OSQuery\
-Publish-MofToPullServer -FullName .\OSQuery.mof -PullServerWebConfig C:\inetpub\PSDSCPullServer\web.config
-cd ..\Chrome\
-Publish-MofToPullServer -FullName .\Chrome.mof -PullServerWebConfig C:\inetpub\PSDSCPullServer\web.config
+Install-Module cChoco -Confirm:$false -RequiredVersion 2.5.0.0
+Compress-Archive -Path "$env:ProgramFiles\WindowsPowerShell\Modules\cChoco" -DestinationPath "$env:ProgramFiles\WindowsPowerShell\DscService\Modules\cChoco_2.5.0.0.zip" 
+New-DscChecksum -Path "$env:ProgramFiles\WindowsPowerShell\DscService\Modules\cChoco_2.5.0.0.zip"
+Write-Host "Waiting for IIS Services to confgure..."
+while (!(Test-Path C:\inetpub\PSDSCPullServer\web.config)) { Start-Sleep 10 }
+cd ..\Configuration\PackageInstaller
+Publish-MofToPullServer -FullName ".\57d5a302-c2cd-49ab-a566-d6947a033043.mof" -PullServerWebConfig "C:\inetpub\PSDSCPullServer\web.config"
 
 #Client enrollment
 $Hostname = hostname
@@ -29,10 +29,12 @@ foreach ($Computer in $Computers) {
 }
 $RegistrationKey = Get-Content 'C:\Program Files\WindowsPowerShell\DscService\RegistrationKeys.txt'
 Invoke-Command $Computers -ScriptBlock {
+    Set-ExecutionPolicy RemoteSigned
+    Unblock-File "C:\PullClientConfigID.ps1"
     Import-Module PSDesiredStateConfiguration
     $Path = Get-Location
     . "C:\PullClientConfigID.ps1"
-    PullClientConfigID -DSCServerFQDN $Using:Hostname -Configurations ('OSQuery', 'Chrome') -RegistrationKey $Using:RegistrationKey
-    pwsh.exe -c 'Set-DscLocalConfigurationManager -Path "$Path\PullClientConfigID\" -Force -Verbose'
+    PullClientConfigID -DSCServerFQDN $Using:Hostname -Configurations @() -RegistrationKey $Using:RegistrationKey
+    Set-DscLocalConfigurationManager -Path "$Path\PullClientConfigID\" -Force -Verbose
     reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v DSCAutomationHostEnabled /t REG_DWORD /d 1 /f
 }

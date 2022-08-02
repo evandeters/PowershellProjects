@@ -58,7 +58,7 @@
             Direction = "Inbound"
             LocalPort = 8080
             Protocol = "TCP"
-            Profile = "Domain"
+            Profile = "All"
             Enabled = "True"
         }
 
