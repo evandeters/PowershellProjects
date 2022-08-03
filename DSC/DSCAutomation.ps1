@@ -14,7 +14,9 @@ Start-DscConfiguration .\New_xDscPullServer
 
 #Add configurations to Pull Server
 Install-Module cChoco -Confirm:$false -RequiredVersion 2.5.0.0
-Compress-Archive -Path "$env:ProgramFiles\WindowsPowerShell\Modules\cChoco" -DestinationPath "$env:ProgramFiles\WindowsPowerShell\DscService\Modules\cChoco_2.5.0.0.zip" 
+Write-Host "Waiting for DSC Server..."
+while (!(Test-Path $env:ProgramFiles\WindowsPowerShell\DscService\Modules)) { Start-Sleep 5 }
+Compress-Archive -Path "$env:ProgramFiles\WindowsPowerShell\Modules\cChoco\2.5.0.0\*" -DestinationPath "$env:ProgramFiles\WindowsPowerShell\DscService\Modules\cChoco_2.5.0.0.zip" 
 New-DscChecksum -Path "$env:ProgramFiles\WindowsPowerShell\DscService\Modules\cChoco_2.5.0.0.zip"
 Write-Host "Waiting for IIS Services to confgure..."
 while (!(Test-Path C:\inetpub\PSDSCPullServer\web.config)) { Start-Sleep 10 }
@@ -34,7 +36,7 @@ Invoke-Command $Computers -ScriptBlock {
     Import-Module PSDesiredStateConfiguration
     $Path = Get-Location
     . "C:\PullClientConfigID.ps1"
-    PullClientConfigID -DSCServerFQDN $Using:Hostname -Configurations @() -RegistrationKey $Using:RegistrationKey
+    PullClientConfigID -DSCServerFQDN $Using:Hostname -RegistrationKey $Using:RegistrationKey
     Set-DscLocalConfigurationManager -Path "$Path\PullClientConfigID\" -Force -Verbose
     reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v DSCAutomationHostEnabled /t REG_DWORD /d 1 /f
 }
