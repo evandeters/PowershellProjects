@@ -6,14 +6,14 @@ Expand-Archive $env:ProgramFiles\DSC.zip -DestinationPath $env:ProgramFiles\DSC\
 #Install DSC web server
 $DSCPath = "$env:ProgramFiles\DSC\PowershellProjects-main\DSC\InitialConfigs\"
 cd $DSCPath
-Install-Module xPSDesiredStateConfiguration -Confirm:$false
-Install-Module xNetworking -Confirm:$false
+Install-Module xPSDesiredStateConfiguration -Confirm:$false -Force
+Install-Module xNetworking -Confirm:$false -Force
 . .\DscWebServiceRegistration.ps1
 New_xDscPullServer -RegistrationKey (New-Guid).Guid
 Start-DscConfiguration .\New_xDscPullServer -Wait -Verbose
 
 #Add configurations to Pull Server
-Install-Module cChoco -Confirm:$false -RequiredVersion 2.5.0.0
+Install-Module cChoco -Confirm:$false -RequiredVersion 2.5.0.0 -Force
 Compress-Archive -Path "$env:ProgramFiles\WindowsPowerShell\Modules\cChoco\2.5.0.0\*" -DestinationPath "$env:ProgramFiles\WindowsPowerShell\DscService\Modules\cChoco_2.5.0.0.zip" 
 New-DscChecksum -Path "$env:ProgramFiles\WindowsPowerShell\DscService\Modules\cChoco_2.5.0.0.zip"
 cd ..\Configuration\PackageInstaller
