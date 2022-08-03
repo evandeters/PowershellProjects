@@ -1,28 +1,30 @@
 /*
 @TargetNode='localhost'
 @GeneratedBy=evanj
-@GenerationDate=08/01/2022 19:44:40
+@GenerationDate=08/03/2022 04:26:27
 @GenerationHost=EVANPC
 */
 
 instance of cChocoInstaller as $cChocoInstaller1ref
 {
-ModuleName = "cChoco";
- InstallDir = "C:\\ProgramData\\chocolatey";
+SourceInfo = "D:\\evanj\\Projects\\PowerShell Projects\\PowershellProjects\\DSC\\Configuration\\PackageInstaller\\PackageInstaller.ps1::7::9::cChocoInstaller";
  ResourceID = "[cChocoInstaller]installChoco";
- SourceInfo = "D:\\evanj\\Projects\\PowerShell Projects\\PowershellProjects\\DSC\\Configuration\\PackageInstaller\\PackageInstaller.ps1::7::9::cChocoInstaller";
+ InstallDir = "C:\\ProgramData\\chocolatey";
  ModuleVersion = "2.5.0.0";
+ ModuleName = "cChoco";
 
  ConfigurationName = "PackageInstaller";
 
 };
 instance of cChocoPackageInstall as $cChocoPackageInstall1ref
 {
-ModuleName = "cChoco";
- Name = "osquery";
- ResourceID = "[cChocoPackageInstaller]installOSQuery";
- SourceInfo = "D:\\evanj\\Projects\\PowerShell Projects\\PowershellProjects\\DSC\\Configuration\\PackageInstaller\\PackageInstaller.ps1::12::9::cChocoPackageInstaller";
+Ensure = "Present";
+ SourceInfo = "C:\\Program Files\\WindowsPowerShell\\Modules\\cChoco\\2.5.0.0\\DscResources\\cChocoPackageInstallerSet\\cChocoPackageInstallerSet.schema.psm1::39::9::cChocoPackageInstaller";
  ModuleVersion = "2.5.0.0";
+ ResourceID = "[cChocoPackageInstaller]cChocoPackageInstaller_Present_osquery::[cChocoPackageInstallerSet]installPackages";
+ Source = "";
+ ModuleName = "cChoco";
+ Name = "osquery";
 
 DependsOn = {
 
@@ -33,11 +35,47 @@ DependsOn = {
 };
 instance of cChocoPackageInstall as $cChocoPackageInstall2ref
 {
-ModuleName = "cChoco";
- Name = "googlechrome";
- ResourceID = "[cChocoPackageInstaller]installChrome";
- SourceInfo = "D:\\evanj\\Projects\\PowerShell Projects\\PowershellProjects\\DSC\\Configuration\\PackageInstaller\\PackageInstaller.ps1::18::9::cChocoPackageInstaller";
+Ensure = "Present";
+ SourceInfo = "C:\\Program Files\\WindowsPowerShell\\Modules\\cChoco\\2.5.0.0\\DscResources\\cChocoPackageInstallerSet\\cChocoPackageInstallerSet.schema.psm1::39::9::cChocoPackageInstaller";
  ModuleVersion = "2.5.0.0";
+ ResourceID = "[cChocoPackageInstaller]cChocoPackageInstaller_Present_googlechrome::[cChocoPackageInstallerSet]installPackages";
+ Source = "";
+ ModuleName = "cChoco";
+ Name = "googlechrome";
+
+DependsOn = {
+
+    "[cChocoInstaller]installChoco"};
+
+ ConfigurationName = "PackageInstaller";
+
+};
+instance of cChocoPackageInstall as $cChocoPackageInstall3ref
+{
+Ensure = "Present";
+ SourceInfo = "C:\\Program Files\\WindowsPowerShell\\Modules\\cChoco\\2.5.0.0\\DscResources\\cChocoPackageInstallerSet\\cChocoPackageInstallerSet.schema.psm1::39::9::cChocoPackageInstaller";
+ ModuleVersion = "2.5.0.0";
+ ResourceID = "[cChocoPackageInstaller]cChocoPackageInstaller_Present_malwarebytes::[cChocoPackageInstallerSet]installPackages";
+ Source = "";
+ ModuleName = "cChoco";
+ Name = "malwarebytes";
+
+DependsOn = {
+
+    "[cChocoInstaller]installChoco"};
+
+ ConfigurationName = "PackageInstaller";
+
+};
+instance of cChocoPackageInstall as $cChocoPackageInstall4ref
+{
+Ensure = "Present";
+ SourceInfo = "C:\\Program Files\\WindowsPowerShell\\Modules\\cChoco\\2.5.0.0\\DscResources\\cChocoPackageInstallerSet\\cChocoPackageInstallerSet.schema.psm1::39::9::cChocoPackageInstaller";
+ ModuleVersion = "2.5.0.0";
+ ResourceID = "[cChocoPackageInstaller]cChocoPackageInstaller_Present_sysinternals::[cChocoPackageInstallerSet]installPackages";
+ Source = "";
+ ModuleName = "cChoco";
+ Name = "sysinternals";
 
 DependsOn = {
 
@@ -62,7 +100,7 @@ instance of OMI_ConfigurationDocument
                         Author="evanj";
 
 
-                        GenerationDate="08/01/2022 19:44:40";
+                        GenerationDate="08/03/2022 04:26:27";
 
 
                         GenerationHost="EVANPC";
