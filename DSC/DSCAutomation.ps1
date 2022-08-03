@@ -10,7 +10,7 @@ Install-Module xPSDesiredStateConfiguration -Confirm:$false
 Install-Module xNetworking -Confirm:$false
 . .\DscWebServiceRegistration.ps1
 New_xDscPullServer -RegistrationKey (New-Guid).Guid
-Start-DscConfiguration .\New_xDscPullServer
+Start-DscConfiguration .\New_xDscPullServer -Wait -Verbose
 
 #Add configurations to Pull Server
 Install-Module cChoco -Confirm:$false -RequiredVersion 2.5.0.0
@@ -37,6 +37,6 @@ Invoke-Command $Computers -ScriptBlock {
     $Path = Get-Location
     . "C:\PullClientConfigID.ps1"
     PullClientConfigID -DSCServerFQDN $Using:Hostname -RegistrationKey $Using:RegistrationKey
-    Set-DscLocalConfigurationManager -Path "$Path\PullClientConfigID\" -Force -Verbose
+    Set-DscLocalConfigurationManager -Path "$Path\PullClientConfigID\" -Force -Verbose -Wait
     reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v DSCAutomationHostEnabled /t REG_DWORD /d 1 /f
 }

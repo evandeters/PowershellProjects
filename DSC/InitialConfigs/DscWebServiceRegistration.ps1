@@ -39,7 +39,7 @@
             State                    = 'Started'
             DependsOn                = '[WindowsFeature]DSCServiceFeature'
             UseSecurityBestPractices = $false
-            ConfigureFirewall        = $false
+            ConfigureFirewall        = $true
         }
 
         File RegistrationKeyFile
@@ -49,19 +49,5 @@
             DestinationPath = "$env:ProgramFiles\WindowsPowerShell\DscService\RegistrationKeys.txt"
             Contents        = $RegistrationKey
         }
-
-        xFirewall DSCPort
-        {
-            Name = "dscweb"
-            DisplayName = "DSC Web Server"
-            Action = "Allow"
-            Direction = "Inbound"
-            LocalPort = 8080
-            Protocol = "TCP"
-            Profile = "All"
-            Enabled = "True"
-        }
-
-
     }
 }
