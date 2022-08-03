@@ -9,15 +9,15 @@ Configuration PackageInstaller {
             InstallDir = "C:\ProgramData\chocolatey"
         }
 
-        cChocoPackageInstaller installOSQuery 
+        cChocoPackageInstallerSet installPackages 
         {
-            Name      = "osquery"
-            DependsOn = "[cChocoInstaller]installChoco"
-        }
-
-        cChocoPackageInstaller installChrome 
-        {
-            Name      = "googlechrome"
+            Ensure = 'Present'
+            Name = @(
+                        "osquery"
+                        "googlechrome"
+                        "malwarebytes"
+                        "sysinternals"
+                    )
             DependsOn = "[cChocoInstaller]installChoco"
         }
     }
