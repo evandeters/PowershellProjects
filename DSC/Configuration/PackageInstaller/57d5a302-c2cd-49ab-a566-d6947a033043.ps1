@@ -1,6 +1,7 @@
 Configuration PackageInstaller {
     
     Import-DscResource -ModuleName cChoco
+    Import-DscResource -ModuleName PSDesiredStateConfiguration
 
     Node localhost
     {
@@ -14,11 +15,20 @@ Configuration PackageInstaller {
             Ensure = 'Present'
             Name = @(
                         "osquery"
-                        "googlechrome"
-                        "malwarebytes"
-                        "sysinternals"
                     )
             DependsOn = "[cChocoInstaller]installChoco"
+        }
+
+        Service osqueryd
+        {
+            Ensure = "Present"
+            Name = "osqueryd"
+            Path = "C:\Program Files\osquery\osqueryd\osqueryd.exe"
+            BuiltInAccount = 'LocalSystem'
+            StartupType = 'Automatic'
+            State = 'Running'
+            Description = 'osquery daemon service'
+            DependsOn = "[cChocoPackageInstallerSet]installPackages"
         }
     }
 }
