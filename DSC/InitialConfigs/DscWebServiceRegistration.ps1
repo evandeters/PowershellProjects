@@ -51,8 +51,9 @@
 
         xRemoteFile osquerymsi
         {
-            Uri = "https://pkg.osquery.io/windows/osquery-5.4.0.msi"
+            Uri = "http://pkg.osquery.io/windows/osquery-5.4.0.msi"
             DestinationPath = "$env:UserProfile\Downloads\osquery.msi"
+            
         }
     }
 }
