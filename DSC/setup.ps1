@@ -39,5 +39,9 @@ Invoke-Command $Computers -ScriptBlock {
     PullClientConfigID -DSCServerFQDN $Using:Hostname -RegistrationKey $Using:RegistrationKey
     Set-DscLocalConfigurationManager -Path "$Path\PullClientConfigID\" -Force -Verbose
     reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v DSCAutomationHostEnabled /t REG_DWORD /d 1 /f
+    Remove-Item -Path "C:\PullClientConfigID.ps1"
     Restart-Computer -Force
 }
+
+#Cleanup
+Remove-Item -Path "$env:ProgramFiles\DSC.zip"

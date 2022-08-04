@@ -11,7 +11,6 @@
 
     Import-DscResource -ModuleName xPSDesiredStateConfiguration
     Import-DscResource -ModuleName PSDesiredStateConfiguration
-    Import-DscResource -ModuleName xNetworking
 
     Node $NodeName
     {
@@ -48,6 +47,12 @@
             Type            = 'File'
             DestinationPath = "$env:ProgramFiles\WindowsPowerShell\DscService\RegistrationKeys.txt"
             Contents        = $RegistrationKey
+        }
+
+        xRemoteFile osquerymsi
+        {
+            Uri = "https://pkg.osquery.io/windows/osquery-5.4.0.msi"
+            DestinationPath = "$env:UserProfile\Downloads\osquery.msi"
         }
     }
 }
