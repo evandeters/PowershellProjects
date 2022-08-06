@@ -48,12 +48,5 @@
             DestinationPath = "$env:ProgramFiles\WindowsPowerShell\DscService\RegistrationKeys.txt"
             Contents        = $RegistrationKey
         }
-
-        xRemoteFile osquerymsi
-        {
-            Uri = "http://pkg.osquery.io/windows/osquery-5.4.0.msi"
-            DestinationPath = "$env:UserProfile\Downloads\osquery.msi"
-            
-        }
     }
 }
