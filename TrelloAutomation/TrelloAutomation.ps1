@@ -2,17 +2,21 @@
 $Hostname = hostname
 $IP = Get-NetIPAddress | where AddressFamily -eq 'IPv4' | Select IPAddress | where IPAddress -NotLike '127.0.0.1' | Select -ExpandProperty IPAddress
 
+$Board = New-TrelloBoard -Name CCDC
+$BoardID = Get-TrelloBoard -Name CCDC | Select -Expand id
+
+$ListID = Get-TrelloList -BoardId $BoardID | where name -eq 'Windows' | select -expand id
+
 $CardName = "Hostname [IP]"
 $CardName = $CardName -Replace "Hostname", $Hostname
 $CardName = $CardName -Replace "IP", $IP
-$Card = New-TrelloCard -ListId $IncomingTicketsList -Name $CardName
+$Card = New-TrelloCard -ListId $ListID -Name $CardName
 
 #Users
-$Comment = pwsh -c (Get-TrelloCard -Board $Board -Name Users | Get-TrelloCardChecklist | Get-TrelloCardChecklistItem | select -ExpandProperty Name) | Out-String
-$Comment = $Comment.Substring($Comment.LastIndexOf('----') + 10)
-New-TrelloCardComment -Card (Get-TrelloCard -Name Users -Board (Get-TrelloBoard -Name CCDC)) -Comment $Comment
+$Users = Get-LocalUser | select -expand name
+New-TrelloCardChecklist -Card $Card -Name Users -Item $Users
 
 #Network Connections
-$NetworkConnections = Get-NetTCPConnection -State Listen,Established | where-object {($_.RemotePort -ne 443) -and ($_.LocalAddress -inotmatch '::' )} | sort-object state,localport | select localaddress,localport,remoteaddress,remoteport,state,owningprocess,@{'Name' = 'ProcessName';'Expression'={(Get-Process -Id $_.OwningProcess).Name}} | %{Write-Output (-join ($_.localaddress, ':',  $_.LocalPort, ' --- ', $_.ProcessName))} | out-string
-New-TrelloCardComment -Card $Card -Comment $NetworkConnections
+$NetworkConnections = Get-NetTCPConnection -State Listen,Established | where-object {($_.RemotePort -ne 443) -and ($_.LocalAddress -inotmatch '::' )}| sort-object state,localport | select localaddress,localport,remoteaddress,remoteport,@{'Name' = 'ProcessName';'Expression'={(Get-Process -Id $_.OwningProcess).Name}} | format-table -AutoSize
+New-TrelloCardChecklist -Card $Card -Name Connections -Item $NetworkConnections
 

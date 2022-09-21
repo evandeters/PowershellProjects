@@ -1,10 +1,10 @@
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 wget https://github.com/evanjd711/PowershellProjects/archive/refs/heads/main.zip -UseBasicParsing -OutFile $env:ProgramFiles\Trello.zip
-Expand-Archive $env:ProgramFiles\Trello.zip -DestinationPath $env:root\Trello\
-$TrelloPath = "$env:ProgramFiles\PowershellProjects-main\TrelloAutomation\"
+Expand-Archive $env:ProgramFiles\Trello.zip -DestinationPath $env:ProgramFiles\Trello\
+$TrelloPath = "$env:ProgramFiles\Trello\PowershellProjects-main\TrelloAutomation\"
 
-$TrelloAPI = Read-Host "Trello API Key (https://trello.com/app-key):"
-$TrelloAccessToken = Read-Host "Trello Access Token:"
+$TrelloAPI = Read-Host -Prompt "Trello API Key (https://trello.com/app-key)"
+$TrelloAccessToken = Read-Host -Prompt "Trello Access Token"
 
 
 $Hostname = hostname
@@ -32,5 +32,5 @@ Invoke-Command $Computers -ScriptBlock {
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     Install-Module PowerTrello -Scope AllUsers -Confirm:$false -Force
     Set-TrelloConfiguration -ApiKey $Using:TrelloAPI -AccessToken $Using:TrelloAccessToken -ErrorAction SilentlyContinue
-    . $env:ProgramFiles\Trello\TrelloAutomation.ps1
-
+    . "$env:ProgramFiles\TrelloAutomation\TrelloAutomation.ps1"
+}
