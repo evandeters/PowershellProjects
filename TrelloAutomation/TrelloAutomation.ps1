@@ -1,5 +1,5 @@
 #Hostname and IP
-$Hostname = hostname
+$Hostname = [System.Net.Dns]::GetHostByName($env:computerName) | Select -expand hostname
 $IP = Get-NetIPAddress | where AddressFamily -eq 'IPv4' | Select IPAddress | where IPAddress -NotLike '127.0.0.1' | Select -ExpandProperty IPAddress
 $OS = (Get-WMIObject win32_operatingsystem).caption
 $DNSserver = Get-DnsClientServerAddress -InterfaceIndex (Get-NetAdapter | Select -expand ifindex) | where ServerAddresses -inotmatch "::" | Select -expand ServerAddresses

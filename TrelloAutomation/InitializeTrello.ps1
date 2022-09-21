@@ -6,8 +6,8 @@ wget https://github.com/evanjd711/PowershellProjects/archive/refs/heads/main.zip
 Expand-Archive $env:ProgramFiles\Trello.zip -DestinationPath $env:ProgramFiles\Trello\
 $TrelloPath = "$env:ProgramFiles\Trello\PowershellProjects-main\TrelloAutomation\"
 
-$Hostname = hostname
-$Computers = Get-ADComputer -filter * -Properties * | Where-Object name -NotLike $Hostname | Where-Object OperatingSystem -Like "*Windows*" | Select-Object -ExpandProperty DNSHostname
+$Hostname = [System.Net.Dns]::GetHostByName($env:computerName) | Select -expand hostname
+$Computers = Get-ADComputer -filter * -Properties * | Where-Object OperatingSystem -Like "*Windows*" | Select-Object -ExpandProperty DNSHostname
 foreach ($Computer in $Computers) {
     Copy-Item -Path $TrelloPath -Destination "$env:ProgramFiles" -toSession (New-PSSession -ComputerName $Computer) -Recurse -Force
 }
