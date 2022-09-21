@@ -24,7 +24,7 @@ $Users = Get-LocalUser | select -expand name
 New-TrelloCardChecklist -Card $Card -Name Users -Item $Users
 
 #Network Connections
-$NetworkConnections = Get-NetTCPConnection -State Listen,Established | where-object {($_.RemotePort -ne 443) -and ($_.LocalAddress -inotmatch '::' )}| sort-object state,localport | select localaddress,localport,remoteaddress,remoteport,@{'Name' = 'ProcessName';'Expression'={(Get-Process -Id $_.OwningProcess).Name}}
+$NetworkConnections = Get-NetTCPConnection -State Listen,Established | where-object {($_.RemotePort -ne 443) -and ($_.LocalPort -ne 5985) -and ($_.LocalAddress -inotmatch '::' )}| sort-object state,localport | select localaddress,localport,remoteaddress,remoteport,@{'Name' = 'ProcessName';'Expression'={(Get-Process -Id $_.OwningProcess).Name}}
 New-TrelloCardChecklist -Card $Card -Name Connections -Item $NetworkConnections
 
 #Windows Features
@@ -33,7 +33,7 @@ New-TrelloCardChecklist -Card $Card -Name Features -Item $Features
 
 #Installed Programs
 $Programs = Get-ChildItem "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall"
-$Programs = foreach ($obj in $Programs) { $obj.GetValue('DisplayName') + '-' + $obj.GetValue('DisplayVersion') }
+$Programs = foreach ($obj in $Programs) { if (!($obj.GetValue('DisplayName') -eq $null)) { ($obj.GetValue('DisplayName') + '-' + $obj.GetValue('DisplayVersion')) }}
 New-TrelloCardChecklist -Card $Card -Name Programs -Item $Programs
 
 #Conditional for AD

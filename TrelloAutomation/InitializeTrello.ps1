@@ -1,14 +1,13 @@
+$TrelloAPI = Read-Host -Prompt "Trello API Key (https://trello.com/app-key)"
+$TrelloAccessToken = Read-Host -Prompt "Trello Access Token"
+
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 wget https://github.com/evanjd711/PowershellProjects/archive/refs/heads/main.zip -UseBasicParsing -OutFile $env:ProgramFiles\Trello.zip
 Expand-Archive $env:ProgramFiles\Trello.zip -DestinationPath $env:ProgramFiles\Trello\
 $TrelloPath = "$env:ProgramFiles\Trello\PowershellProjects-main\TrelloAutomation\"
 
-$TrelloAPI = Read-Host -Prompt "Trello API Key (https://trello.com/app-key)"
-$TrelloAccessToken = Read-Host -Prompt "Trello Access Token"
-
-
 $Hostname = hostname
-$Computers = Get-ADComputer -filter *| Where-Object name -NotLike $Hostname | Where-Object OperatingSystem -Like "*Windows*" | Select-Object -ExpandProperty DNSHostname
+$Computers = Get-ADComputer -filter * -Properties * | Where-Object name -NotLike $Hostname | Where-Object OperatingSystem -Like "*Windows*" | Select-Object -ExpandProperty DNSHostname
 foreach ($Computer in $Computers) {
     Copy-Item -Path $TrelloPath -Destination "$env:ProgramFiles" -toSession (New-PSSession -ComputerName $Computer) -Recurse
 }
