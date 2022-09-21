@@ -20,12 +20,12 @@ $CardName = $CardName -Replace "IP", $IP
 $Card = New-TrelloCard -ListId $ListID -Name $CardName -Description $Description
 
 #Users
-$Users = Get-LocalUser | select -expand name
-New-TrelloCardChecklist -Card $Card -Name Users -Item $Users
+#$Users = Get-LocalUser | select -expand name
+#New-TrelloCardChecklist -Card $Card -Name Users -Item $Users
 
 #Network Connections
-$NetworkConnections = Get-NetTCPConnection -State Listen,Established | where-object {($_.RemotePort -ne 443) -and ($_.LocalPort -ne 5985) -and ($_.LocalAddress -inotmatch '::' )}| sort-object state,localport | select localaddress,localport,remoteaddress,remoteport,@{'Name' = 'ProcessName';'Expression'={(Get-Process -Id $_.OwningProcess).Name}}
-New-TrelloCardChecklist -Card $Card -Name Connections -Item $NetworkConnections
+#$NetworkConnections = Get-NetTCPConnection -State Listen,Established | where-object {($_.RemotePort -ne 443) -and ($_.LocalPort -ne 5985) -and ($_.LocalAddress -inotmatch '::' )}| sort-object state,localport | select localaddress,localport,remoteaddress,remoteport,@{'Name' = 'ProcessName';'Expression'={(Get-Process -Id $_.OwningProcess).Name}}
+#New-TrelloCardChecklist -Card $Card -Name Connections -Item $NetworkConnections
 
 #Windows Features
 $Features = Get-WindowsFeature | Where Installed | select -expand name
