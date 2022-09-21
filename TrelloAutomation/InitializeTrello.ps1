@@ -9,7 +9,7 @@ $TrelloPath = "$env:ProgramFiles\Trello\PowershellProjects-main\TrelloAutomation
 $Hostname = hostname
 $Computers = Get-ADComputer -filter * -Properties * | Where-Object name -NotLike $Hostname | Where-Object OperatingSystem -Like "*Windows*" | Select-Object -ExpandProperty DNSHostname
 foreach ($Computer in $Computers) {
-    Copy-Item -Path $TrelloPath -Destination "$env:ProgramFiles" -toSession (New-PSSession -ComputerName $Computer) -Recurse
+    Copy-Item -Path $TrelloPath -Destination "$env:ProgramFiles" -toSession (New-PSSession -ComputerName $Computer) -Recurse -Force
 }
 
 $Board = New-TrelloBoard -Name CCDC
