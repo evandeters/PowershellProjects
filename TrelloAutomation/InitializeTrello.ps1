@@ -13,7 +13,7 @@ foreach ($Computer in $Computers) {
     Copy-Item -Path $TrelloPath -Destination "$env:ProgramFiles" -toSession (New-PSSession -ComputerName $Computer) -Recurse
 }
 
-$Board = New-TrelloBoard -Name CCDC
+#$Board = New-TrelloBoard -Name CCDC
 $BoardID = Get-TrelloBoard -Name CCDC | Select -Expand id
 
 #Create Lists
