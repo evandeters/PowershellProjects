@@ -8,12 +8,12 @@ $TrelloAccessToken = Read-Host -Prompt "Trello Access Token"
 
 
 $Hostname = hostname
-$Computers = Get-ADComputer -filter *| Where-Object name -NotLike $Hostname | Select-Object -ExpandProperty Name
+$Computers = Get-ADComputer -filter *| Where-Object name -NotLike $Hostname | Where-Object OperatingSystem -Like "*Windows*" | Select-Object -ExpandProperty DNSHostname
 foreach ($Computer in $Computers) {
     Copy-Item -Path $TrelloPath -Destination "$env:ProgramFiles" -toSession (New-PSSession -ComputerName $Computer) -Recurse
 }
 
-#$Board = New-TrelloBoard -Name CCDC
+$Board = New-TrelloBoard -Name CCDC
 $BoardID = Get-TrelloBoard -Name CCDC | Select -Expand id
 
 #Create Lists
